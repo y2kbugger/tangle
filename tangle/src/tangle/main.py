@@ -92,7 +92,7 @@ def checkATangle(dna):
             winding = winding + 1
         else:
             winding = winding - 1
-    if abs(winding) != 4:
+    if winding != 4:
         return countTotal, countWinding, countReturnToOrigin, countUncrossed
     else:
         countWinding += 1
@@ -151,7 +151,7 @@ def checkATangle(dna):
 
 pool = Pool(4)
 print(dnaLength)
-for tangle in pool.imap_unordered(checkATangle, it.product([True, False], repeat=dnaLength), chunksize=20000):
+for tangle in pool.imap_unordered(checkATangle, it.product([True, False], repeat=dnaLength), chunksize=50000):
     try:
         countTotal += tangle[0]
         countWinding += tangle[1]
@@ -176,8 +176,8 @@ pool.close()
 pool.join()
 
 
-print("countTotal", countTotal * 2)
-print("countWinding", countWinding * 2)
-print("countReturnToOrigin", countReturnToOrigin * 2)
-print("countUncrossed", countUncrossed * 2)
+print("countTotal", countTotal)
+print("countWinding", countWinding)
+print("countReturnToOrigin", countReturnToOrigin)
+print("countUncrossed", countUncrossed)
 print("Timer", time.time() - timer, 'seconds')
