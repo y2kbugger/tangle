@@ -27,9 +27,9 @@ int main() {
   std::unordered_set<unsigned long> seen;
   std::unordered_set<unsigned long> seenFree;
 
-  std::cout << "DNA_ORDER: " << DNA_ORDER << "\n";
-  std::cout << "DNA_LENGTH: " << DNA_LENGTH << "\n";
-  std::cout << "Polyominoe perimeter: " << DNA_ORDER * 2 + 2 << "\n";
+  //std::cout << "DNA_ORDER: " << DNA_ORDER << "\n";
+  //std::cout << "DNA_LENGTH: " << DNA_LENGTH << "\n";
+  //std::cout << "Polyominoe perimeter: " << DNA_ORDER * 2 + 2 << "\n";
 
   //main loop for iterating over every possible combination of left and right turns
   for (dna = 0; (dna+1) <= (((long)1 << (DNA_LENGTH - 1))); ++dna){
@@ -51,16 +51,16 @@ int main() {
 
     std::cout << "\n";
     dnaOut(maxdna);
-    std::cout << maxdna;
+    //std::cout << maxdna; this outputs dna as the decimal
   }
-  std::cout << "\n";
-  std::cout << "\n";
-  std::cout << "final countTotal: " << countTotal << "\n";
-  std::cout << "final countWinding: " << countWinding << "\n";
-  std::cout << "final countReturnToOrigin: " << countReturnToOrigin << "\n";
-  std::cout << "final countUncrossed: " << countUncrossed << "\n";
-  std::cout << "final countUniqueInPlane: " << countUniqueInPlane << "\n";
-  std::cout << "final countUniqueFree: " << countUniqueFree << "\n";
-  std::cout << "final duration: " << ((double)(clock() - begin) / CLOCKS_PER_SEC) << "\n";
+  //std::cout << "\n";
+  //std::cout << "\n";
+  //std::cout << "final countTotal: " << countTotal << "\n";
+  //std::cout << "final countWinding: " << countWinding << "\n";
+  //std::cout << "final countReturnToOrigin: " << countReturnToOrigin << "\n";
+  //std::cout << "final countUncrossed: " << countUncrossed << "\n";
+  //std::cout << "final countUniqueInPlane: " << countUniqueInPlane << "\n";
+  //std::cout << "final countUniqueFree: " << countUniqueFree << "\n";
+  //std::cout << "final duration: " << ((double)(clock() - begin) / CLOCKS_PER_SEC) << "\n";
   return(0);
 }
