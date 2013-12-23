@@ -2,6 +2,19 @@
 Created on Dec 12, 2012
 
 @author: y2k
+
+Read STDIN or a file and pick out the lines that contain a DNA string
+eg:"100101". Process these DNA strings into diagrams that describe
+the shape of the tangle:
+
+16 : 1110001001001000
+ooooooooooooooooo╱╲ooooooooooooo!
+oooooooooooooooo╱oo╲oooooooooooo!
+ooooooooooooooo╱o╱╲o╲ooooooooooo!
+ooooooooooooooo╲xo╱o╱ooooooooooo!
+ooooooooooooooooo╱o╱oooooooooooo!
+ooooooooooooooooo╲╱ooooooooooooo!
+================================
 '''
 
 if __name__ == '__main__':
@@ -9,6 +22,7 @@ if __name__ == '__main__':
 
 print('"a pic today is now 1000 words, in the dollar." -nc hawkzieg')
 
+import fileinput
 
 N = (0, 1)
 S = (0, -1)
@@ -25,7 +39,7 @@ class Tangle:
         self.dna = dna
         self.path = []
 
-        #next move nswe
+        #next move NSWE
         self.move = False
 
         self.SetMove(self.dna[0])
@@ -64,7 +78,7 @@ class Tangle:
         self.xy[1] = self.xy[1] + self.move[1]  # now step in the new direction
 
 
-def checkATangle(dna):
+def printATangle(dna):
 
     aTangle = Tangle(xyStart, bearingStart, dna)
 
@@ -93,22 +107,29 @@ def checkATangle(dna):
 
     for y in output:
         if y == ['o' for x in range(dnaLength * 2)]:
-           pass
-	# continue
+            #pass
+            continue  #allow for the outputs to be short
         for x in y:
             print(x, sep='', end='')
         print('!')
-    output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
+    #output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
 
-while True:
-    #"enter a string of dna(eg: 100101):  "
-    s = input()
-    if s == 'q': break
+for line in fileinput.input():
+    #read in from STDIN or a file, strings of DNA eg:"100101"
+    s = line.strip()
+    
+    if len(s) == 0: continue #ignore lines of only whitespace
+    if len(s.strip("10")) != 0:
+        print(s) #print out lines that contain data that isn't DNA
+        continue #only let in strings that have only zeros and ones
+
     dnaLength = len(s)
     dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
-    print("dna:", s)
-    print("dnaLength: ", dnaLength)
+    
 
-    checkATangle(dna)
-    print("=============================")
+    print("")
+    print(dnaLength, ":", s)
+    printATangle(dna)
+    print("=" * dnaLength * 2)
+    
 
