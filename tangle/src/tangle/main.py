@@ -13,7 +13,7 @@ import time
 
 timer = time.time()
 
-dnaLength = 28
+dnaLength = 16
 
 countWinding = 0
 countReturnToOrigin = 0
@@ -139,39 +139,19 @@ def checkATangle(dna):
             first = False
 
     countUncrossed += 1
-#
-#    print(dna)
-#    output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
-#
-#    for step in aTangle.path:
-#        if (step[2] == (0, 1) and step[1] == (1, 0)) | (step[2] == (1, 0) and step[1] == (0, 1)) | (step[2] == (0, -1) and step[1] == (-1, 0)) | (step[2] == (-1, 0) and step[1] == (0, -1)) :
-#            symbol = '╱'
-#        else:
-#            symbol = '╲'
-#
-#        x = step[0][0] + dnaLength  # this is how to determine the square to draw in from using bearing move and xy om the path history
-#        y = step[0][1] + dnaLength  # and center the thing
-#        if step[1][0] == -1:
-#            x = x - 1
-#        if step[2][0] == -1:
-#            x = x - 1
-#
-#        if step[1][1] == -1:
-#            y = y - 1
-#        if step[2][1] == -1:
-#            y = y - 1
-#
-#        output[y][-x] = symbol
-#        output[dnaLength][dnaLength] = 'x'
-#
-#    for y in output:
-#        if y == ['o' for x in range(dnaLength * 2)]:
-#            continue
-#        for x in y:
-#            print(x, sep='', end='')
-#        print('!')
-#    print('_____')
-#    output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
+
+    strDNA = ""
+    for x in dna:
+        if x == True:
+            strDNA += "1"
+        else:
+            strDNA += "0"
+    print(strDNA)
+    
+    
+
+    
+    
 
 countTotal = 0
 print(dnaLength)
