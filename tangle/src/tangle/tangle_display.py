@@ -15,6 +15,10 @@ ooooooooooooooo╲xo╱o╱ooooooooooo!
 ooooooooooooooooo╱o╱oooooooooooo!
 ooooooooooooooooo╲╱ooooooooooooo!
 ================================
+
+piping echo will allow you to view custom DNAs:
+$ echo 01110001 | python3 /home/PATH/TO/SCRIPT/tangle_display.py
+
 '''
 
 if __name__ == '__main__':
@@ -79,9 +83,11 @@ class Tangle:
 
 
 def printATangle(dna):
-
+    dnaLength = len(dna)
+    dnaString = dna
+    dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
     aTangle = Tangle(xyStart, bearingStart, dna)
-
+    dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
     output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
 
     for step in aTangle.path:
@@ -103,16 +109,21 @@ def printATangle(dna):
             y = y - 1
 
         output[y][-x] = symbol
-        output[dnaLength][dnaLength] = 'x'
+    output[dnaLength][dnaLength] = 'x'
 
-    for y in output:
-        if y == ['o' for x in range(dnaLength * 2)]:
-            #pass
-            continue  #allow for the outputs to be short
-        for x in y:
-            print(x, sep='', end='')
-        print('!')
-    #output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
+    
+    #do the actual drawing:
+    print("")
+    print(dnaLength, ":", dnaString)
+    
+    for row in output:
+        strRow = ''.join(row)
+        if strRow != 'o' * dnaLength * 2:
+            #only print the row if it contains something interesting
+            print(strRow)
+     
+    print("=" * dnaLength * 2)
+
 
 for line in fileinput.input():
     #read in from STDIN or a file, strings of DNA eg:"100101"
@@ -122,14 +133,8 @@ for line in fileinput.input():
     if len(s.strip("10")) != 0:
         print(s) #print out lines that contain data that isn't DNA
         continue #only let in strings that have only zeros and ones
-
-    dnaLength = len(s)
-    dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
     
-
-    print("")
-    print(dnaLength, ":", s)
-    printATangle(dna)
-    print("=" * dnaLength * 2)
+    printATangle(s)
+    
     
 
