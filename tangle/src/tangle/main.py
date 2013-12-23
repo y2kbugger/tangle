@@ -13,20 +13,20 @@ import time
 
 from multiprocessing import Pool, Value
 from ctypes import c_ulong, c_int
-timer = time.clock()
+timer = time.time()
 N = (0, 1)
 S = (0, -1)
 E = (1, 0)
 W = (-1, 0)
 
-dnaLength = Value(c_int, 16)
+dnaLength = 20
 bearingStart = N
 xyStart = (0, 0)
 
-countTotal = Value(c_ulong, 0, lock=True)
-countWinding = Value(c_ulong, 0, lock=True)
-countReturnToOrigin = Value(c_ulong, 0, lock=True)
-countUncrossed = Value(c_ulong, 0, lock=True)
+countTotal = 0
+countWinding = 0
+countReturnToOrigin = 0
+countUncrossed = 0
 
 
 class Tangle:
@@ -77,8 +77,14 @@ class Tangle:
 
 
 def checkATangle(dna):
-    countTotal.value += 1
-    print("countTotal", countTotal.value)
+    if dna[0] == False:
+        return
+    countTotal = 0
+    countWinding = 0
+    countReturnToOrigin = 0
+    countUncrossed = 0
+
+    countTotal += 1
     #verify that winding no = 1
     winding = 0
     for i in dna:
@@ -87,79 +93,91 @@ def checkATangle(dna):
         else:
             winding = winding - 1
     if abs(winding) != 4:
-        return
+        return countTotal, countWinding, countReturnToOrigin, countUncrossed
     else:
-        countWinding.value += 1
+        countWinding += 1
 
     aTangle = Tangle(xyStart, bearingStart, dna)
 
     # do they return to the origin to complete a circut
     if aTangle.path[-1][0] == xyStart:
-        countReturnToOrigin.value += 1
+        countReturnToOrigin += 1
     else:
-        return
+        return countTotal, countWinding, countReturnToOrigin, countUncrossed
 
     # have they crossed?
     been = set()
-    crossed = False
     first = True
     for step in aTangle.path:
         if step[0] in been:
-            crossed = True
-            break
+            return countTotal, countWinding, countReturnToOrigin, countUncrossed
         else:
             if first != True:
                 been.add(step[0])
-        first = False
-        if crossed == True:
-            break
-    if crossed == False:
-        countUncrossed.value += 1
-    output = [['o' for x in range(dnaLength.value * 2)] for x in range(dnaLength.value * 2)]
+            first = False
 
-    for step in aTangle.path:
-        if (step[2] == N and step[1] == E) | (step[2] == E and step[1] == N) | (step[2] == S and step[1] == W) | (step[2] == W and step[1] == S) :
-            symbol = '╱'
-        else:
-            symbol = '╲'
+    countUncrossed += 1
 
-        x = step[0][0] + dnaLength.value  # this is how to determine the square to draw in from using bearing move and xy om the path history
-        y = step[0][1] + dnaLength.value  # and center the thing
-        if step[1][0] == -1:
-            x = x - 1
-        if step[2][0] == -1:
-            x = x - 1
 
-        if step[1][1] == -1:
-            y = y - 1
-        if step[2][1] == -1:
-            y = y - 1
-
-        output[y][-x] = symbol
-        output[dnaLength.value][dnaLength.value] = 'x'
-    print("countTotal")
-    if True:
-        for y in output:
-            if y == ['o' for x in range(dnaLength.value * 2)]:
-                return
-            for x in y:
-                print(x, sep='', end='')
-            print('!')
-        print('_____')
-    return
+#generate output
+#    output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
+#    for step in aTangle.path:
+#        if (step[2] == N and step[1] == E) | (step[2] == E and step[1] == N) | (step[2] == S and step[1] == W) | (step[2] == W and step[1] == S) :
+#            symbol = '╱'
+#        else:
+#            symbol = '╲'
+#
+#        x = step[0][0] + dnaLength  # this is how to determine the square to draw in from using bearing move and xy om the path history
+#        y = step[0][1] + dnaLength  # and center the thing
+#        if step[1][0] == -1:
+#            x = x - 1
+#        if step[2][0] == -1:
+#            x = x - 1
+#
+#        if step[1][1] == -1:
+#            y = y - 1
+#        if step[2][1] == -1:
+#            y = y - 1
+#
+#        output[y][-x] = symbol
+#        output[dnaLength][dnaLength] = 'x'
+#    return countTotal, countWinding, countReturnToOrigin, countUncrossed, output
 
 
 
-pool = Pool()
-print(dnaLength.value)
-pool.imap(checkATangle, it.product([True, False], repeat=dnaLength.value), chunksize=5000)
+    return countTotal, countWinding, countReturnToOrigin, countUncrossed
+
+
+
+pool = Pool(4)
+print(dnaLength)
+for tangle in pool.imap_unordered(checkATangle, it.product([True, False], repeat=dnaLength), chunksize=20000):
+    try:
+        countTotal += tangle[0]
+        countWinding += tangle[1]
+        countReturnToOrigin += tangle[2]
+        countUncrossed += tangle[3]
+    except TypeError:
+        pass
+
+##print output    
+#    try:
+#        for y in tangle[4]:
+#            if y == ['o' for x in range(dnaLength * 2)]:
+#                continue
+#            for x in y:
+#                print(x, sep='', end='')
+#            print('!')
+#        print('_____')
+#    except IndexError:
+#        pass
 
 pool.close()
 pool.join()
 
 
-print("countTotal", countTotal.value)
-print("countWinding", countWinding.value)
-print("countReturnToOrigin", countReturnToOrigin.value)
-print("countUncrossed", countUncrossed.value)
-print("Timer", time.clock() - timer, 'seconds')
+print("countTotal", countTotal * 2)
+print("countWinding", countWinding * 2)
+print("countReturnToOrigin", countReturnToOrigin * 2)
+print("countUncrossed", countUncrossed * 2)
+print("Timer", time.time() - timer, 'seconds')
