@@ -9,7 +9,9 @@
 #include <iostream>
 #include <unordered_set>
 #include <climits>
+#include <cmath>
 #include "tangle.h"
+
 
 int main() {
   std::cout << "\"a worth today is now future, in the dollar.\" -noc lipzieg\n\n";
@@ -30,9 +32,10 @@ int main() {
   std::cout << "DNA_ORDER: " << DNA_ORDER << "\n";
   std::cout << "DNA_LENGTH: " << DNA_LENGTH << "\n";
   std::cout << "Polyominoe perimeter: " << DNA_ORDER * 2 + 2 << "\n";
-
+  std::cout << "Max Area bound: " << pow(((static_cast<float>(DNA_ORDER) * 2 + 2)/4),2) << "\n";
   //main loop for iterating over every possible combination of left and right turns
   for (dna = 0; (dna+1) <= (((long)1 << (DNA_LENGTH - 1))); ++dna){
+
     countTotal++;
 
     if(winding(dna) != -4) continue;
@@ -50,7 +53,7 @@ int main() {
     countUniqueFree++; //std::cout << "                                  uniqueFree!!!!!\n";
 
     std::cout << "\n";
-    dnaOut(maxdna);
+    dnaOut(dna);
     //std::cout << maxdna; this outputs dna as the decimal
   }
   std::cout << "\n";
@@ -58,6 +61,7 @@ int main() {
   std::cout << "DNA_ORDER: " << DNA_ORDER << "\n";
   std::cout << "DNA_LENGTH: " << DNA_LENGTH << "\n";
   std::cout << "Polyominoe perimeter: " << DNA_ORDER * 2 + 2 << "\n";
+  std::cout << "Max Area bound: " << pow(((static_cast<float>(DNA_ORDER) * 2 + 2)/4),2) << "\n";
   std::cout << "\n";
   std::cout << "final countTotal: " << countTotal << "\n";
   std::cout << "final countWinding: " << countWinding << "\n";

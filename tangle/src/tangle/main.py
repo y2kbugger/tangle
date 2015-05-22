@@ -36,7 +36,6 @@ class Tangle:
         self.move = False
 
         self.SetMove(self.dna[0])
-  #      self.path.append(((self.xy[0], self.xy[1]), self.bearing, self.move))
         for turn in self.dna:
             self.Move(turn)
             self.bearing = self.move
@@ -76,7 +75,7 @@ def checkATangle(dna):
     if dna[0] == False:
         pass
         #return
-    #is the winding number a positive 1
+    #is the winding number equal to exactly positive 1
     global countReturnToOrigin
     global countWinding
     global countUncrossed
@@ -147,10 +146,7 @@ def checkATangle(dna):
         else:
             strDNA += "0"
     print(strDNA)
-    
-    
 
-    
     
 
 countTotal = 0
