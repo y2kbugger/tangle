@@ -13,7 +13,7 @@
 //forward declarations
 
 //configure the length that you want the dna to be here
-const unsigned int DNA_ORDER = 6;
+const unsigned int DNA_ORDER = 5;
 
 const unsigned long DNA_LENGTH = 4*DNA_ORDER;
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 Created on Dec 12, 2012
 
@@ -24,7 +26,7 @@ $ echo 01110001 | python3 /home/PATH/TO/SCRIPT/tangle_display.py
 if __name__ == '__main__':
     pass
 
-print('"a pic today is now 1000 words, in the dollar." -nc hawkzieg')
+print('''"a pic today is now 1000 words, in the dollar." -nc hawkzieg''')
 
 import fileinput
 
@@ -88,13 +90,14 @@ def printATangle(dna):
     dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
     aTangle = Tangle(xyStart, bearingStart, dna)
     dna = [bool(int(s[i:i + 1], 2)) for i in range(0, len(s), 1)]
-    output = [['o' for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
+    background = " "
+    output = [[background for x in range(dnaLength * 2)] for x in range(dnaLength * 2)]
 
     for step in aTangle.path:
         if (step[2] == (0, 1) and step[1] == (1, 0)) | (step[2] == (1, 0) and step[1] == (0, 1)) | (step[2] == (0, -1) and step[1] == (-1, 0)) | (step[2] == (-1, 0) and step[1] == (0, -1)) :
-            symbol = '╱'
+            symbol = '/'
         else:
-            symbol = '╲'
+            symbol = '\\'
 
         x = step[0][0] + dnaLength  # this is how to determine the square to draw in from using bearing move and xy om the path history
         y = step[0][1] + dnaLength  # and center the thing
@@ -118,7 +121,7 @@ def printATangle(dna):
     
     for row in output:
         strRow = ''.join(row)
-        if strRow != 'o' * dnaLength * 2:
+        if strRow != background * dnaLength * 2:
             #only print the row if it contains something interesting
             print(strRow)
      
