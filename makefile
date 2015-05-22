@@ -1,17 +1,21 @@
 CC := g++
 SRCDIR := src
 BUILDDIR := build
-TARGET := bin/tangle
+TARGETDIR := bin
+TARGET := $(TARGETDIR)/tangle
  
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+
 CFLAGS := -v -g --std=c++11 -Wall
 LIB := #-pthread
 INC := -I include
 
+
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
+	@echo $(SCRIPTS)
 	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
