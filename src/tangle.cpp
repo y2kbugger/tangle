@@ -7,11 +7,11 @@
 
 /*
  ============================================================================
- Name        : learncccc.c
+ Name        : tangle
  Author      : y2k
  Version     :
  Copyright   : Your copyright notice
- Description : kkkkkk
+ Description : 
  ============================================================================
  */
 
@@ -23,7 +23,8 @@
 
 bool getDnaPiece(const unsigned long dna, int n){
 //will return the turn at a particular part of the DNA
-//the number one needed to be typecast so that shifting bits to make the mask would not knock it off the end
+//the number one needed to be typecast so that shifting bits
+//to make the mask would not knock it off the end
 //should now work with dna > 30
 	return(dna & ((long)1<<(n-1)));
 }
@@ -35,7 +36,7 @@ void entireDnaOut(const unsigned long dna){
   }
 }
 
-//output only the relevent segment of dna
+//output only the relevant segment of dna
 void dnaOut(const unsigned long dna){
   for (int n = DNA_LENGTH; n > 0; --n){
     std::cout << getDnaPiece(dna, n);
