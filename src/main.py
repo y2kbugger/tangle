@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 '''
 Created on Dec 12, 2012
 
@@ -13,7 +14,7 @@ import time
 
 timer = time.time()
 
-dnaLength = 16
+dnaLength = 16 
 
 countWinding = 0
 countReturnToOrigin = 0
