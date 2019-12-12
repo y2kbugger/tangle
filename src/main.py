@@ -5,7 +5,7 @@ Created on Dec 12, 2012
 @author: y2k
 
 TODO:add docstrings
-TODO:seperate the check types because some just waste time for
+TODO:separate the check types because some just waste time for
 some algorithms
 Todo:when separating out the checks build the counting into outside so as to not slowdown the algorithm.
 todo: unit test for results that can be applied separtly from the benchmark runs.
@@ -218,7 +218,7 @@ def maximise(dna):
 def grow(dna, maxdnalength, growndnas=list()):
     for n, item in enumerate(dna):
         growndna = list(dna)
-        # replace each piece with 5 pieces that is guareteed to connect
+        # replace each piece with 5 pieces that is guaranteed to connect
         # this will raise the order of the dna by 1
         # will yield len(dna) new possible dnas to be tested
         growndna[n:n+1] = False, True, True, True, False
@@ -288,7 +288,7 @@ def main():
     elif args.alg == 'brute':
         brute(args.dnaLength)
     else:
-        print("invalid algorythm choice")
+        print("invalid algorithm choice")
 
     print('time', time.time() - timer)
 
